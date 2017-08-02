@@ -9,17 +9,20 @@
 import ObjectMapper
 
 struct Member: Mappable{
-    var id: String = ""
+    var id: Int = 0
     var title: String = ""
     var connection: String = ""
     var price: String = ""
     var public_date: String = ""
+    var province: String = ""
     var area: String = ""
+    var address: String = ""
     var age: String = ""
     var security: String = ""
     var judge: String = ""
     var project: String = ""
     var detail: String = ""
+    var images: [String] = []
     
     init?(map: Map) {}
     
@@ -29,12 +32,15 @@ struct Member: Mappable{
         connection <- map["connection"]
         price <- map["price"]
         public_date <- map["public_date"]
+        province <- map["province"]
         area <- map["area"]
+        address <- map["address"]
         age <- map["age"]
         security <- map["security"]
         judge <- map["judge"]
         project <- map["project"]
         detail <- map["detail"]
+        images <- map["images"]
     }
 }
 

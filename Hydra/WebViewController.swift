@@ -70,6 +70,7 @@ class WKWebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate 
         if navigationAction.targetFrame == nil {
             let url = navigationAction.request.url
             if url?.description.range(of: "mailto:") != nil || url?.description.range(of: "tel:") != nil  {
+//                UIApplication.shared.open(<#T##url: URL##URL#>, options: <#T##[String : Any]#>, completionHandler: <#T##((Bool) -> Void)?##((Bool) -> Void)?##(Bool) -> Void#>)
                 UIApplication.shared.openURL(url!)
             }else {
                 self.justShowWKWebViewController(fromVC: self, url: navigationAction.request.url?.description ?? "")

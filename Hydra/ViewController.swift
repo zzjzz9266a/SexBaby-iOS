@@ -55,7 +55,7 @@ class ViewController: UITableViewController {
             tableView.mj_header.endRefreshing()
             return
         }
-        Alamofire.request("http://zhangzhijie.space:8080/api/list", method: .post, parameters: ["province": province!, "page": 1]).responseObject { (response: DataResponse<Members>) in
+        Alamofire.request("http://47.94.140.221:9090/api/list", method: .post, parameters: ["province": province!, "page": 1]).responseObject { (response: DataResponse<Members>) in
             self.tableView.mj_header.endRefreshing()
             self.dataSource = response.value!
             self.tableView.reloadData()
@@ -81,7 +81,7 @@ class ViewController: UITableViewController {
             return
         }
         isLoading = true
-        Alamofire.request("http://zhangzhijie.space:8080/api/list", method: .post, parameters: ["province": province!, "page": dataSource!.current_page+1]).responseObject { (response: DataResponse<Members>) in
+        Alamofire.request("http://47.94.140.221:9090/api/list", method: .post, parameters: ["province": province!, "page": dataSource!.current_page+1]).responseObject { (response: DataResponse<Members>) in
             self.dataSource?.insert(item: response.value!)
             self.tableView.reloadData()
             self.isLoading = false
