@@ -9,6 +9,8 @@
 import UIKit
 import AlamofireObjectMapper
 import Alamofire
+import Kingfisher
+import SKPhotoBrowser
 
 class DetailVC: UITableViewController {
     
@@ -24,10 +26,12 @@ class DetailVC: UITableViewController {
     @IBOutlet weak var judgelabel: UILabel!
     
     @IBOutlet weak var detailLabel: UILabel!
+    @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewLayout: UICollectionViewFlowLayout!
     
     var baby: Member?
     var id: Int = 0
-    var province: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +39,7 @@ class DetailVC: UITableViewController {
     }
     
     func loadData(){
-        Alamofire.request("http://47.94.140.221:9090/api/detail/\(id)", method: .post, parameters: ["province": province]).responseObject { (response: DataResponse<Member>) in
+        Alamofire.request("http://47.94.140.221:9090/api/detail/\(id)", method: .post).responseObject { (response: DataResponse<Member>) in
             self.baby = response.value
             self.refreshContent()
             self.tableView.reloadData()
@@ -53,6 +57,15 @@ class DetailVC: UITableViewController {
         securityLabel.text = baby?.security
         judgelabel.text = baby?.judge
         detailLabel.text = baby?.detail
+        collectionView.reloadData()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        let screenWidth = UIScreen.main.bounds.width
+        collectionViewLayout.itemSize = CGSize(width: screenWidth, height: screenWidth)
+        collectionViewLayout.minimumLineSpacing = 0
+        collectionViewLayout.minimumInteritemSpacing = 0
     }
 }
 
@@ -69,6 +82,41 @@ extension DetailVC{
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        switch indexPath.section {
+        case 1:
+            if baby?.images.count == 0{
+                return 0
+            }else{
+                return UIScreen.main.bounds.width
+            }
+        default:
+            return UITableViewAutomaticDimension
+        }
+    }
+}
+
+extension DetailVC: UICollectionViewDataSource, UICollectionViewDelegate{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return baby?.images.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        (cell.viewWithTag(10086) as? UIImageView)?.kf.setImage(with: URL(string: baby!.images[indexPath.row]))
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let images = baby!.images.map({SKPhoto.photoWithImageURL($0)})
+        let skVC = SKPhotoBrowser(photos: images)
+        skVC.initializePageIndex(indexPath.row)
+        present(skVC, animated: true, completion: nil)
+    }
+    
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView == collectionView{
+            let index = Int(scrollView.contentOffset.x/UIScreen.main.bounds.width)
+            pageControl.currentPage = index
+        }
     }
 }

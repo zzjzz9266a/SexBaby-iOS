@@ -14,14 +14,34 @@ import MJRefresh
 class ViewController: UITableViewController {
 
     var dataSource: Members?
-    var province: String?
+    var province: String = "北京"
     var filterBtn: FuckingButton!
+    var provinces: [String] = []
+    var searchVC: UISearchController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(loadData))
         tableView.mj_header.beginRefreshing()
+        setupSearchVC()
         setupFilterBtn()
+        loadProvinces()
+    }
+    
+    func loadProvinces(){
+        Alamofire.request("http://47.94.140.221:9090/api/province", method: .post).responseJSON { (response) in
+            if let array = response.value as? [String]{
+                self.provinces = array
+            }
+        }
+    }
+    
+    func setupSearchVC(){
+        searchVC = UISearchController(searchResultsController: UITableViewController())
+        searchVC.searchBar.placeholder = "搜索城市、地区、详细地址"
+        searchVC.searchBar.searchBarStyle = .minimal
+//        searchVC.searchBar.isTranslucent = true
+        tableView.tableHeaderView = searchVC.searchBar
     }
     
     func setupFilterBtn(){
@@ -38,24 +58,16 @@ class ViewController: UITableViewController {
     
     func filting(){
         DropDownMenuManager.share.showTriangle = true
-        DropDownMenuManager.share.show(CGRect(x: UIScreen.main.bounds.width-64, y: 32, width: 64, height: 30), options: ["北京", "四川", "广东", "云南"], finish: { (index, text) in
+        DropDownMenuManager.share.menuHeight = 400
+        DropDownMenuManager.share.show(CGRect(x: UIScreen.main.bounds.width-72, y: 32, width: 64, height: 30), options: provinces, finish: { (index, text) in
             self.filterBtn.setTitle(text, for: .normal)
-
-            let contents = CFStringCreateMutableCopy(nil, 0, text as CFString)
-            CFStringTransform(contents, nil, kCFStringTransformToLatin, false)
-            CFStringTransform(contents, nil, kCFStringTransformStripCombiningMarks, false)
-            let pinyin = (contents! as String).replacingOccurrences(of: " ", with: "")
-            self.province = pinyin
+            self.province = text
             self.tableView.mj_header.beginRefreshing()
         })
     }
     
     func loadData(){
-        guard province != nil else {
-            tableView.mj_header.endRefreshing()
-            return
-        }
-        Alamofire.request("http://47.94.140.221:9090/api/list", method: .post, parameters: ["province": province!, "page": 1]).responseObject { (response: DataResponse<Members>) in
+        Alamofire.request("http://47.94.140.221:9090/api/list", method: .post, parameters: ["province": province, "page": 1]).responseObject { (response: DataResponse<Members>) in
             self.tableView.mj_header.endRefreshing()
             self.dataSource = response.value!
             self.tableView.reloadData()
@@ -68,7 +80,6 @@ class ViewController: UITableViewController {
         case "Detail"?:
             if let detail = segue.destination as? DetailVC{
                 detail.id = dataSource!.list[tableView.indexPathForSelectedRow!.row].id
-                detail.province = province!
             }
         default:
             break
@@ -81,7 +92,7 @@ class ViewController: UITableViewController {
             return
         }
         isLoading = true
-        Alamofire.request("http://47.94.140.221:9090/api/list", method: .post, parameters: ["province": province!, "page": dataSource!.current_page+1]).responseObject { (response: DataResponse<Members>) in
+        Alamofire.request("http://47.94.140.221:9090/api/list", method: .post, parameters: ["province": province, "page": dataSource!.current_page+1]).responseObject { (response: DataResponse<Members>) in
             self.dataSource?.insert(item: response.value!)
             self.tableView.reloadData()
             self.isLoading = false
@@ -122,12 +133,20 @@ class Cell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var areaLabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        layer.shouldRasterize = true
+        layer.rasterizationScale = UIScreen.main.scale
+    }
     
     var data: Member?{
         didSet{
             guard data != nil else {return}
             titleLabel.text = data!.title
             priceLabel.text = data!.price
+            areaLabel.text = data!.area
             timeLabel.text = "发布时间：" + data!.public_date
         }
     }

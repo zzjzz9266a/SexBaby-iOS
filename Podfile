@@ -10,4 +10,6 @@ target 'Hydra' do
   pod 'Alamofire'
   pod 'MJRefresh'
   pod 'AlamofireObjectMapper'
+  pod 'SKPhotoBrowser'
+  pod 'Kingfisher'
 end
