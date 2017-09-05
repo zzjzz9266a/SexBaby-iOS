@@ -30,11 +30,14 @@ class DetailVC: UITableViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewLayout: UICollectionViewFlowLayout!
     
+    var starBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+    
     var baby: Member?
     var id: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setStar()
         loadData()
     }
     
@@ -46,7 +49,18 @@ class DetailVC: UITableViewController {
         }
     }
     
+    func setStar(){
+        starBtn.setImage(#imageLiteral(resourceName: "星标"), for: .normal)
+        starBtn.setImage(#imageLiteral(resourceName: "星标-实心"), for: .selected)
+        starBtn.addTarget(self, action: #selector(starClick), for: .touchUpInside)
+        starBtn.isSelected = App.favoriteList.contains(id)
+        let btnItem = UIBarButtonItem()
+        btnItem.customView = starBtn
+        navigationItem.rightBarButtonItem = btnItem
+    }
+    
     func refreshContent(){
+        pageControl.numberOfPages = baby?.images.count ?? 0
         titleLabel.text = baby?.title
         priceLabel.text = baby?.price
         phoneLabel.text = baby?.connection
@@ -66,6 +80,16 @@ class DetailVC: UITableViewController {
         collectionViewLayout.itemSize = CGSize(width: screenWidth, height: screenWidth)
         collectionViewLayout.minimumLineSpacing = 0
         collectionViewLayout.minimumInteritemSpacing = 0
+    }
+    
+    func starClick(){
+        if let index = App.favoriteList.index(of: id){
+            App.favoriteList.remove(at: index)
+            starBtn.isSelected = false
+        }else{
+            App.favoriteList.append(id)
+            starBtn.isSelected = true
+        }
     }
 }
 

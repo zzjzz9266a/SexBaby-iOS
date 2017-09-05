@@ -37,10 +37,15 @@ class ViewController: UITableViewController {
     }
     
     func setupSearchVC(){
-        searchVC = UISearchController(searchResultsController: UITableViewController())
+        let resultVC = SearchVC.nib
+        resultVC.province = province
+        searchVC = UISearchController(searchResultsController: resultVC)
         searchVC.searchBar.placeholder = "搜索城市、地区、详细地址"
         searchVC.searchBar.searchBarStyle = .minimal
-//        searchVC.searchBar.isTranslucent = true
+        searchVC.delegate = self
+        searchVC.searchResultsUpdater = resultVC
+        definesPresentationContext = true
+
         tableView.tableHeaderView = searchVC.searchBar
     }
     
@@ -72,7 +77,6 @@ class ViewController: UITableViewController {
             self.dataSource = response.value!
             self.tableView.reloadData()
         }
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -106,9 +110,16 @@ extension ViewController{
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! Cell
-        cell.data = dataSource!.list[indexPath.row]
-        return cell
+        let item = dataSource!.list[indexPath.row]
+        if item.images.isEmpty{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! Cell
+            cell.data = item
+            return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: indexPath) as! ImageCell
+            cell.data = item
+            return cell
+        }
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -116,7 +127,11 @@ extension ViewController{
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        if dataSource!.list[indexPath.row].images.isEmpty{
+            return UITableViewAutomaticDimension
+        }else{
+            return 600
+        }
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -125,6 +140,16 @@ extension ViewController{
                 loadMore()
             }
         }
+    }
+}
+
+extension ViewController: UISearchControllerDelegate{
+    func willPresentSearchController(_ searchController: UISearchController) {
+        tableView.mj_header = nil
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        tableView.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(loadData))
     }
 }
 
@@ -148,6 +173,30 @@ class Cell: UITableViewCell {
             priceLabel.text = data!.price
             areaLabel.text = data!.area
             timeLabel.text = "发布时间：" + data!.public_date
+        }
+    }
+}
+
+class ImageCell: UITableViewCell {
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var areaLabel: UILabel!
+    @IBOutlet weak var imgView: UIImageView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+    }
+    
+    var data: Member?{
+        didSet{
+            guard data != nil else {return}
+            titleLabel.text = data!.title
+            priceLabel.text = data!.price
+            areaLabel.text = data!.area
+            timeLabel.text = "发布时间：" + data!.public_date
+            imgView.kf.setImage(with: URL(string: data!.images.first!))
         }
     }
 }

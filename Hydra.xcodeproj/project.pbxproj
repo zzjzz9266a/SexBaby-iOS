@@ -19,6 +19,9 @@
 		B89E3D511F2F37C100BA3E46 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89E3D501F2F37C100BA3E46 /* UIView.swift */; };
 		B89E3D531F2F38AF00BA3E46 /* DropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89E3D521F2F38AF00BA3E46 /* DropDownMenu.swift */; };
 		B89E3D551F2F443E00BA3E46 /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89E3D541F2F443E00BA3E46 /* DetailVC.swift */; };
+		B8EBA4E71F5EA0BB00CEC233 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EBA4E61F5EA0BB00CEC233 /* App.swift */; };
+		B8EBA4E91F5EB3AB00CEC233 /* CollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EBA4E81F5EB3AB00CEC233 /* CollectionVC.swift */; };
+		B8EBA4ED1F5ED42400CEC233 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EBA4EC1F5ED42400CEC233 /* SearchVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,6 +54,9 @@
 		B89E3D501F2F37C100BA3E46 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		B89E3D521F2F38AF00BA3E46 /* DropDownMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownMenu.swift; sourceTree = "<group>"; };
 		B89E3D541F2F443E00BA3E46 /* DetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
+		B8EBA4E61F5EA0BB00CEC233 /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		B8EBA4E81F5EB3AB00CEC233 /* CollectionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionVC.swift; sourceTree = "<group>"; };
+		B8EBA4EC1F5ED42400CEC233 /* SearchVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,9 +111,12 @@
 			children = (
 				B89E3D501F2F37C100BA3E46 /* UIView.swift */,
 				B89025A21F2CA93C0038F74D /* AppDelegate.swift */,
+				B8EBA4E61F5EA0BB00CEC233 /* App.swift */,
 				B89E3D521F2F38AF00BA3E46 /* DropDownMenu.swift */,
 				B89E3D071F2F35B500BA3E46 /* FuckingButton.swift */,
 				B89025A41F2CA93C0038F74D /* ViewController.swift */,
+				B8EBA4E81F5EB3AB00CEC233 /* CollectionVC.swift */,
+				B8EBA4EC1F5ED42400CEC233 /* SearchVC.swift */,
 				B89E3D541F2F443E00BA3E46 /* DetailVC.swift */,
 				B89025B61F2CAF930038F74D /* WebViewController.swift */,
 				B89025B41F2CA9B70038F74D /* Member.swift */,
@@ -155,7 +164,7 @@
 				TargetAttributes = {
 					B890259E1F2CA93C0038F74D = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = Z4H85W66CY;
+						DevelopmentTeam = 3M8H5R9Z4D;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -244,9 +253,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8EBA4E71F5EA0BB00CEC233 /* App.swift in Sources */,
+				B8EBA4ED1F5ED42400CEC233 /* SearchVC.swift in Sources */,
 				B89025A51F2CA93C0038F74D /* ViewController.swift in Sources */,
 				B89E3D081F2F35B500BA3E46 /* FuckingButton.swift in Sources */,
 				B89025B51F2CA9B70038F74D /* Member.swift in Sources */,
+				B8EBA4E91F5EB3AB00CEC233 /* CollectionVC.swift in Sources */,
 				B89025A31F2CA93C0038F74D /* AppDelegate.swift in Sources */,
 				B89E3D531F2F38AF00BA3E46 /* DropDownMenu.swift in Sources */,
 				B89E3D551F2F443E00BA3E46 /* DetailVC.swift in Sources */,
@@ -377,7 +389,7 @@
 			baseConfigurationReference = 69258BF0998C0C6239D94DFA /* Pods-Hydra.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = Z4H85W66CY;
+				DEVELOPMENT_TEAM = 3M8H5R9Z4D;
 				INFOPLIST_FILE = Hydra/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -393,7 +405,7 @@
 			baseConfigurationReference = 2F5B1380067BC22D729DCF0E /* Pods-Hydra.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = Z4H85W66CY;
+				DEVELOPMENT_TEAM = 3M8H5R9Z4D;
 				INFOPLIST_FILE = Hydra/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
