@@ -26,10 +26,11 @@ class ViewController: UITableViewController {
         setupSearchVC()
         setupFilterBtn()
         loadProvinces()
+
     }
     
     func loadProvinces(){
-        Alamofire.request("http://47.94.140.221:9090/api/province", method: .post).responseJSON { (response) in
+        Alamofire.request("https://baby.zhangzhijie.net/api/province", method: .post).responseJSON { (response) in
             if let array = response.value as? [String]{
                 self.provinces = array
             }
@@ -38,7 +39,7 @@ class ViewController: UITableViewController {
     
     func setupSearchVC(){
         let resultVC = SearchVC.nib
-        resultVC.province = province
+        resultVC.vc = self
         searchVC = UISearchController(searchResultsController: resultVC)
         searchVC.searchBar.placeholder = "搜索城市、地区、详细地址"
         searchVC.searchBar.searchBarStyle = .minimal
@@ -61,7 +62,7 @@ class ViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: filterBtn)
     }
     
-    func filting(){
+    @objc func filting(){
         DropDownMenuManager.share.showTriangle = true
         DropDownMenuManager.share.menuHeight = 400
         DropDownMenuManager.share.show(CGRect(x: UIScreen.main.bounds.width-72, y: 32, width: 64, height: 30), options: provinces, finish: { (index, text) in
@@ -71,8 +72,8 @@ class ViewController: UITableViewController {
         })
     }
     
-    func loadData(){
-        Alamofire.request("http://47.94.140.221:9090/api/list", method: .post, parameters: ["province": province, "page": 1]).responseObject { (response: DataResponse<Members>) in
+    @objc func loadData(){
+        Alamofire.request("https://baby.zhangzhijie.net/api/list", method: .post, parameters: ["province": province, "page": 1]).responseObject { (response: DataResponse<Members>) in
             self.tableView.mj_header.endRefreshing()
             self.dataSource = response.value!
             self.tableView.reloadData()
@@ -96,7 +97,7 @@ class ViewController: UITableViewController {
             return
         }
         isLoading = true
-        Alamofire.request("http://47.94.140.221:9090/api/list", method: .post, parameters: ["province": province, "page": dataSource!.current_page+1]).responseObject { (response: DataResponse<Members>) in
+        Alamofire.request("https://baby.zhangzhijie.net/api/list", method: .post, parameters: ["province": province, "page": dataSource!.current_page+1]).responseObject { (response: DataResponse<Members>) in
             self.dataSource?.insert(item: response.value!)
             self.tableView.reloadData()
             self.isLoading = false

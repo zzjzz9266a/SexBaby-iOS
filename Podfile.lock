@@ -1,29 +1,42 @@
 PODS:
-  - Alamofire (4.5.0)
-  - AlamofireObjectMapper (4.1.0):
+  - Alamofire (4.5.1)
+  - AlamofireObjectMapper (5.0.0):
     - Alamofire (~> 4.1)
-    - ObjectMapper (~> 2.0)
-  - Kingfisher (3.10.4)
-  - MJRefresh (3.1.12)
-  - ObjectMapper (2.2.8)
-  - SKPhotoBrowser (4.0.1)
+    - ObjectMapper (~> 3.0)
+  - Kingfisher (4.1.0)
+  - MJRefresh (3.1.13)
+  - ObjectMapper (3.0.0)
 
 DEPENDENCIES:
   - Alamofire
-  - AlamofireObjectMapper
+  - AlamofireObjectMapper (from `https://github.com/tristanhimmelman/AlamofireObjectMapper`, branch `swift-4`)
   - Kingfisher
   - MJRefresh
-  - ObjectMapper
-  - SKPhotoBrowser
+  - ObjectMapper (from `https://github.com/Hearst-DD/ObjectMapper`, branch `swift-4`)
+
+EXTERNAL SOURCES:
+  AlamofireObjectMapper:
+    :branch: swift-4
+    :git: https://github.com/tristanhimmelman/AlamofireObjectMapper
+  ObjectMapper:
+    :branch: swift-4
+    :git: https://github.com/Hearst-DD/ObjectMapper
+
+CHECKOUT OPTIONS:
+  AlamofireObjectMapper:
+    :commit: 9304efad0c1f68d6fc25cf565bd30ff862501664
+    :git: https://github.com/tristanhimmelman/AlamofireObjectMapper
+  ObjectMapper:
+    :commit: 18051553fc44e98ffb1b7e93fa94cd184283d993
+    :git: https://github.com/Hearst-DD/ObjectMapper
 
 SPEC CHECKSUMS:
-  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
-  AlamofireObjectMapper: 435adc82f5b367679bd9e71c4974a54efd0b2521
-  Kingfisher: dc3a4983e86d2dfa89513664983a82340c11a289
-  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
-  ObjectMapper: 3d571bb5af471c779e1160828cd9ad5c4ef90958
-  SKPhotoBrowser: 3a7c6fc02aa1620ab17253a47a49fafda46536e8
+  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
+  AlamofireObjectMapper: e1ff207b71715478ab69f12ca85112f37b139de8
+  Kingfisher: f14df8cbe576bf55f211fa589e9869bceb4ea87d
+  MJRefresh: 56a28aa628c9895e97a518dabaecf70b18f92f32
+  ObjectMapper: 739e5530df22248823f6cc7ed9e016ebf2c26a27
 
-PODFILE CHECKSUM: c753f558b1ecf6d2ff05c3e3a2dc5c587c956e25
+PODFILE CHECKSUM: d2d7c3c57a4c09dd700c627080ae46a5337002e2
 
 COCOAPODS: 1.1.1

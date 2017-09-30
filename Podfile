@@ -6,10 +6,11 @@ target 'Hydra' do
   use_frameworks!
 
   # Pods for Hydra
-  pod 'ObjectMapper'
+  pod 'ObjectMapper', :git => 'https://github.com/Hearst-DD/ObjectMapper', :branch => 'swift-4'
   pod 'Alamofire'
   pod 'MJRefresh'
-  pod 'AlamofireObjectMapper'
-  pod 'SKPhotoBrowser'
+  pod 'AlamofireObjectMapper', :git => 'https://github.com/tristanhimmelman/AlamofireObjectMapper', :branch => 'swift-4'
+  #pod 'SKPhotoBrowser', :git => 'https://github.com/zzjzz9266a/SKPhotoBrowser/tree/swift4', :branch => 'swift4'
   pod 'Kingfisher'
+#  pod 'TagListView'
 end

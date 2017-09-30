@@ -10,7 +10,7 @@ import UIKit
 import AlamofireObjectMapper
 import Alamofire
 import Kingfisher
-import SKPhotoBrowser
+//import SKPhotoBrowser
 
 class DetailVC: UITableViewController {
     
@@ -42,7 +42,7 @@ class DetailVC: UITableViewController {
     }
     
     func loadData(){
-        Alamofire.request("http://47.94.140.221:9090/api/detail/\(id)", method: .post).responseObject { (response: DataResponse<Member>) in
+        Alamofire.request("https://baby.zhangzhijie.net/api/detail/\(id)", method: .post).responseObject { (response: DataResponse<Member>) in
             self.baby = response.value
             self.refreshContent()
             self.tableView.reloadData()
@@ -82,7 +82,7 @@ class DetailVC: UITableViewController {
         collectionViewLayout.minimumInteritemSpacing = 0
     }
     
-    func starClick(){
+    @objc func starClick(){
         if let index = App.favoriteList.index(of: id){
             App.favoriteList.remove(at: index)
             starBtn.isSelected = false

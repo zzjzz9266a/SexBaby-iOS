@@ -91,7 +91,7 @@ class WKWebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate 
         self.dismiss(animated: true, completion: nil)
     }
     
-    func share() {
+    @objc func share() {
 
     }
 

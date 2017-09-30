@@ -19,20 +19,20 @@ class CollectionVC: UITableViewController {
         super.viewDidLoad()
         tableView.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(loadData))
         tableView.mj_header.beginRefreshing()
-
     }
     
-    func loadData(){
+    @objc func loadData(){
         do{
-            let data = try JSONSerialization.data(withJSONObject: App.favoriteList, options: [])
+            let reverseArray: [Int] = App.favoriteList.reversed()
+            let data = try JSONSerialization.data(withJSONObject: reverseArray, options: [])
             let json = String(data: data, encoding: .utf8)!
-            Alamofire.request("http://47.94.140.221:9090/api/collection", method: .post, parameters: ["ids": json, "page": 1]).responseObject { (response: DataResponse<Members>) in
+            Alamofire.request("https://baby.zhangzhijie.net/api/collection", method: .post, parameters: ["ids": json, "page": 1]).responseObject { (response: DataResponse<Members>) in
                 self.tableView.mj_header.endRefreshing()
                 self.dataSource = response.value
                 self.tableView.reloadData()
             }
-        }catch{
-            
+        }catch let error{
+            print(error)
         }
     }
     
@@ -42,11 +42,19 @@ class CollectionVC: UITableViewController {
             return
         }
         isLoading = true
-        Alamofire.request("http://47.94.140.221:9090/api/collection", method: .post, parameters: ["ids": App.favoriteList, "page": dataSource!.current_page+1]).responseObject { (response: DataResponse<Members>) in
-            self.dataSource?.insert(item: response.value!)
-            self.tableView.reloadData()
-            self.isLoading = false
+        do {
+            let reverseArray: [Int] = App.favoriteList.reversed()
+            let data = try JSONSerialization.data(withJSONObject: reverseArray, options: [])
+            let json = String(data: data, encoding: .utf8)!
+            Alamofire.request("https://baby.zhangzhijie.net/api/collection", method: .post, parameters: ["ids": json, "page": dataSource!.current_page+1]).responseObject { (response: DataResponse<Members>) in
+                self.dataSource?.insert(item: response.value!)
+                self.tableView.reloadData()
+                self.isLoading = false
+            }
+        } catch let error {
+            print(error)
         }
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -94,7 +102,7 @@ extension CollectionVC{
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if dataSource!.list.count - indexPath.row <= 5 {
             if dataSource!.haveMore{
-                loadMore()
+//                loadMore()
             }
         }
     }

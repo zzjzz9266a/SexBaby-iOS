@@ -16,8 +16,10 @@ class SearchVC: UITableViewController {
     }
     
     var results: Members?
-    var province: String!
+    
     var keyword: String?
+    
+    weak var vc: ViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +37,7 @@ class SearchVC: UITableViewController {
         }
         isLoading = true
         guard let word = keyword else {return}
-        Alamofire.request("http://47.94.140.221:9090/api/search", method: .post, parameters: ["province": province, "keyword": word, "page": results!.current_page+1]).responseObject { (response: DataResponse<Members>) in
+        Alamofire.request("http://47.94.140.221:9090/api/search", method: .post, parameters: ["province": vc.province, "keyword": word, "page": results!.current_page+1]).responseObject { (response: DataResponse<Members>) in
             self.results?.insert(item: response.value!)
             self.tableView.reloadData()
             self.isLoading = false
@@ -103,7 +105,8 @@ extension SearchVC{
 extension SearchVC: UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
         guard let keyword = searchController.searchBar.text else {return}
-        Alamofire.request("http://47.94.140.221:9090/api/search", method: .post, parameters: ["province": province, "keyword": keyword]).responseObject { (response: DataResponse<Members>) in
+        self.keyword = keyword
+        Alamofire.request("https://baby.zhangzhijie.net/api/search", method: .post, parameters: ["province": vc.province, "keyword": keyword]).responseObject { (response: DataResponse<Members>) in
             self.results = response.value!
             self.tableView.reloadData()
         }
